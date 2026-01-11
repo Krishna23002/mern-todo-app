@@ -5,11 +5,11 @@ const Todo = ({ token, setToken }) => {
   const [todos, setTodos] = useState([]);
   const [title, setTitle] = useState("");
   const [editId, setEditId] = useState(null);
-const [editTitle, setEditTitle] = useState("");
+  const [editTitle, setEditTitle] = useState("");
 
-const [isDark, setIsDark] = useState(
-  localStorage.getItem("theme") === "dark"
-);
+  const [isDark, setIsDark] = useState(
+    localStorage.getItem("theme") === "dark"
+  );
 
   useEffect(() => {
     axios.get("https://mern-todo-app.onrender.com/todos", {
@@ -63,49 +63,49 @@ const [isDark, setIsDark] = useState(
   };
 
   const startEdit = (todo) => {
-  setEditId(todo._id);
-  setEditTitle(todo.title);
-};
+    setEditId(todo._id);
+    setEditTitle(todo.title);
+  };
 
-const saveEdit = (id) => {
-  axios
-    .put(
-      `https://mern-todo-app.onrender.com/todos/${id}`,
-      { title: editTitle },
-      {
+  const saveEdit = (id) => {
+    axios
+      .put(
+        `https://mern-todo-app.onrender.com/todos/${id}`,
+        { title: editTitle },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      )
+      .then((res) => {
+        setTodos(
+          todos.map((todo) =>
+            todo._id === id ? res.data : todo
+          )
+        );
+        setEditId(null);
+      })
+      .catch((err) => console.error(err));
+  };
+
+  const clearAllTodos = () => {
+    axios
+      .delete("https://mern-todo-app.onrender.com/todos", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      }
-    )
-    .then((res) => {
-      setTodos(
-        todos.map((todo) =>
-          todo._id === id ? res.data : todo
-        )
-      );
-      setEditId(null);
-    })
-    .catch((err) => console.error(err));
-};
+      })
+      .then(() => {
+        setTodos([]); // instantly clear UI
+      })
+      .catch((err) => console.error(err));
+  };
 
-const clearAllTodos = () => {
-  axios
-    .delete("https://mern-todo-app.onrender.com/todos", {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-    .then(() => {
-      setTodos([]); // instantly clear UI
-    })
-    .catch((err) => console.error(err));
-};
-
-const toggleTheme = () => {
-  setIsDark(!isDark);
-  localStorage.setItem("theme", !isDark ? "dark" : "light");
-};
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    localStorage.setItem("theme", !isDark ? "dark" : "light");
+  };
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -117,11 +117,11 @@ const toggleTheme = () => {
       <h1>Todo App</h1>
       <button onClick={logout} className="logoutButton">Logout</button>
       <button className="clear-btn" onClick={clearAllTodos}>
-  Clear All
-</button>
-<button className="theme-btn" onClick={toggleTheme}>
-  {isDark ? "Light Mode" : "Dark Mode"}
-</button>
+        Clear All
+      </button>
+      <button className="theme-btn" onClick={toggleTheme}>
+        {isDark ? "Light Mode" : "Dark Mode"}
+      </button>
 
 
 
@@ -135,42 +135,42 @@ const toggleTheme = () => {
       </div>
 
       <ul className="todo-list">
-  {todos.map((todo) => (
-    <li key={todo._id} className="todo-item">
-      <div className="left">
-        <input
-          type="checkbox"
-          checked={todo.completed}
-          onChange={() => toggleTodo(todo._id, todo.completed)}
-        />
+        {todos.map((todo) => (
+          <li key={todo._id} className="todo-item">
+            <div className="left">
+              <input
+                type="checkbox"
+                checked={todo.completed}
+                onChange={() => toggleTodo(todo._id, todo.completed)}
+              />
 
-        {editId === todo._id ? (
-          <input
-            value={editTitle}
-            onChange={(e) => setEditTitle(e.target.value)}
-            className="edit-input"
-          />
-        ) : (
-          <span
-            className={todo.completed ? "completed" : ""}
-          >
-            {todo.title}
-          </span>
-        )}
-      </div>
+              {editId === todo._id ? (
+                <input
+                  value={editTitle}
+                  onChange={(e) => setEditTitle(e.target.value)}
+                  className="edit-input"
+                />
+              ) : (
+                <span
+                  className={todo.completed ? "completed" : ""}
+                >
+                  {todo.title}
+                </span>
+              )}
+            </div>
 
-      <div className="right">
-        {editId === todo._id ? (
-          <button onClick={() => saveEdit(todo._id)}>💾</button>
-        ) : (
-          <button onClick={() => startEdit(todo)}>✏️</button>
-        )}
+            <div className="right">
+              {editId === todo._id ? (
+                <button onClick={() => saveEdit(todo._id)}>💾</button>
+              ) : (
+                <button onClick={() => startEdit(todo)}>✏️</button>
+              )}
 
-        <button onClick={() => deleteTodo(todo._id)}>❌</button>
-      </div>
-    </li>
-  ))}
-</ul>
+              <button onClick={() => deleteTodo(todo._id)}>❌</button>
+            </div>
+          </li>
+        ))}
+      </ul>
 
     </div>
   );
