@@ -12,7 +12,7 @@ const Todo = ({ token, setToken }) => {
   );
 
   useEffect(() => {
-    axios.get("https://mern-todo-app.onrender.com/todos", {
+    axios.get("https://mern-todo-app-1-zxn7.onrender.com/todos", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,7 +21,7 @@ const Todo = ({ token, setToken }) => {
 
   const addTodo = () => {
     axios.post(
-      "https://mern-todo-app.onrender.com/todos",
+      "https://mern-todo-app-1-zxn7.onrender.com/todos",
       { title },
       {
         headers: {
@@ -35,7 +35,7 @@ const Todo = ({ token, setToken }) => {
   };
 
   const deleteTodo = (id) => {
-    axios.delete(`https://mern-todo-app.onrender.com/todos/${id}`, {
+    axios.delete(`https://mern-todo-app-1-zxn7.onrender.com/todos/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -46,7 +46,7 @@ const Todo = ({ token, setToken }) => {
 
   const toggleTodo = (id, completed) => {
     axios.put(
-      `https://mern-todo-app.onrender.com/todos/${id}`,
+      `https://mern-todo-app-1-zxn7.onrender.com/todos/${id}`,
       { completed: !completed },
       {
         headers: {
@@ -70,7 +70,7 @@ const Todo = ({ token, setToken }) => {
   const saveEdit = (id) => {
     axios
       .put(
-        `https://mern-todo-app.onrender.com/todos/${id}`,
+        `https://mern-todo-app-1-zxn7.onrender.com/todos/${id}`,
         { title: editTitle },
         {
           headers: {
@@ -91,7 +91,7 @@ const Todo = ({ token, setToken }) => {
 
   const clearAllTodos = () => {
     axios
-      .delete("https://mern-todo-app.onrender.com/todos", {
+      .delete("https://mern-todo-app-1-zxn7.onrender.com/todos", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

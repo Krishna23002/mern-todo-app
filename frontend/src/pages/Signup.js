@@ -10,7 +10,7 @@ const Signup = ({ toggleForm }) => {
     e.preventDefault();
     setError(""); // Clear previous errors
     try {
-      await axios.post("https://mern-todo-app.onrender.com/api/auth/signup", { email, password });
+      await axios.post("https://mern-todo-app-1-zxn7.onrender.com/api/auth/signup", { email, password });
       alert("Signup successful. Please login.");
       toggleForm(); // Switch to login after signup
     } catch (err) {

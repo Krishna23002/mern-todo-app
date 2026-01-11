@@ -10,7 +10,7 @@ const Login = ({ setToken, toggleForm }) => {
     e.preventDefault();
     setError(""); // Clear previous error
     try {
-      const res = await axios.post("https://mern-todo-app.onrender.com/api/auth/login", { email, password });
+      const res = await axios.post("https://mern-todo-app-1-zxn7.onrender.com/api/auth/login", { email, password });
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
     } catch (err) {
