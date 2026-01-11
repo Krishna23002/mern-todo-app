@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use("/todos", todoRoutes);
-app.use("/auth", authRoutes);
+app.use("api/auth", authRoutes);
 
 mongoose
   .connect(process.env.MONGO_URI)
