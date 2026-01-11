@@ -12,7 +12,7 @@ const [isDark, setIsDark] = useState(
 );
 
   useEffect(() => {
-    axios.get("http://localhost:5000/todos", {
+    axios.get("https://mern-todo-app.onrender.com/todos", {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,7 +21,7 @@ const [isDark, setIsDark] = useState(
 
   const addTodo = () => {
     axios.post(
-      "http://localhost:5000/todos",
+      "https://mern-todo-app.onrender.com/todos",
       { title },
       {
         headers: {
@@ -35,7 +35,7 @@ const [isDark, setIsDark] = useState(
   };
 
   const deleteTodo = (id) => {
-    axios.delete(`http://localhost:5000/todos/${id}`, {
+    axios.delete(`https://mern-todo-app.onrender.com/todos/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -46,7 +46,7 @@ const [isDark, setIsDark] = useState(
 
   const toggleTodo = (id, completed) => {
     axios.put(
-      `http://localhost:5000/todos/${id}`,
+      `https://mern-todo-app.onrender.com/todos/${id}`,
       { completed: !completed },
       {
         headers: {
@@ -70,7 +70,7 @@ const [isDark, setIsDark] = useState(
 const saveEdit = (id) => {
   axios
     .put(
-      `http://localhost:5000/todos/${id}`,
+      `https://mern-todo-app.onrender.com/todos/${id}`,
       { title: editTitle },
       {
         headers: {
@@ -91,7 +91,7 @@ const saveEdit = (id) => {
 
 const clearAllTodos = () => {
   axios
-    .delete("http://localhost:5000/todos", {
+    .delete("https://mern-todo-app.onrender.com/todos", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
