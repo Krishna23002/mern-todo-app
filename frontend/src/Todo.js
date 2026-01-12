@@ -41,22 +41,24 @@ useEffect(() => {
   }, []);
 
 
-  const addTodo = () => {
-  if (!title.trim()) return; // do nothing if title is empty
+ const addTodo = () => {
+  const trimmedTitle = title.trim();
+  if (!trimmedTitle) return; // prevent empty title
 
   axios.post(
     "https://mern-todo-app-1-zxn7.onrender.com/todos",
-    { title: title.trim() },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  ).then((res) => {
+    { title: trimmedTitle }, // only title needed
+    { headers: { Authorization: `Bearer ${token}` } }
+  )
+  .then((res) => {
     setTodos([...todos, res.data]);
     setTitle("");
-  }).catch(err => console.error(err.response?.data || err));
+  })
+  .catch(err => {
+    console.error("POST /todos error:", err.response?.data || err);
+  });
 };
+
 
 
   const deleteTodo = (id) => {
