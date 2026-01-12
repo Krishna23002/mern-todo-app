@@ -12,6 +12,10 @@ const Todo = ({ token, setToken }) => {
     localStorage.getItem("theme") === "dark"
   );
 
+  useEffect(() => {
+  document.title = "Todo App";
+}, []);
+
 useEffect(() => {
   if (!token) return; // wait until token exists
 

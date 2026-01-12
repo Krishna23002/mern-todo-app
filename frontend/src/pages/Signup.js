@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const Signup = ({ toggleForm }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(""); // For showing error messages
+
+  useEffect(() => {
+    document.title = "Todo App | Signup";
+  }, []);
 
   const handleSignup = async (e) => {
     e.preventDefault();
@@ -24,9 +28,11 @@ const Signup = ({ toggleForm }) => {
   };
 
   return (
+    <div className="authContainer">
     <form onSubmit={handleSignup} className="authForm">
-      <h1>Todo App</h1>
-      <h2>Signup</h2>
+      <h2>Todo App</h2>
+      <p className="authPara">Manage your daily tasks easily</p>
+      <h3>Signup</h3>
       <input placeholder="Email" onChange={e => setEmail(e.target.value)} />
       <input type="password" placeholder="Password"
         onChange={e => setPassword(e.target.value)} />
@@ -42,7 +48,7 @@ const Signup = ({ toggleForm }) => {
           Login
         </button>
       </p>
-    </form>
+    </form></div>
   );
 };
 
