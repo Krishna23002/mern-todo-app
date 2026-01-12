@@ -6,6 +6,7 @@ const Todo = ({ token, setToken }) => {
   const [title, setTitle] = useState("");
   const [editId, setEditId] = useState(null);
   const [editTitle, setEditTitle] = useState("");
+  const [todayLabel, setTodayLabel] = useState("");
 
   const [isDark, setIsDark] = useState(
     localStorage.getItem("theme") === "dark"
@@ -18,6 +19,24 @@ const Todo = ({ token, setToken }) => {
       },
     }).then((res) => setTodos(res.data));
   }, [token]);
+
+  useEffect(() => {
+  if (!token) {
+    window.location.href = "/login";
+  }
+}, [token]);
+
+
+  useEffect(() => {
+    setTodayLabel(getTodayLabel());
+
+    const interval = setInterval(() => {
+      setTodayLabel(getTodayLabel());
+    }, 60000); // updates if day changes while app is open
+
+    return () => clearInterval(interval);
+  }, []);
+
 
   const addTodo = () => {
     axios.post(
@@ -68,39 +87,40 @@ const Todo = ({ token, setToken }) => {
   };
 
   const saveEdit = (id) => {
-    axios
-      .put(
-        `https://mern-todo-app-1-zxn7.onrender.com/todos/${id}`,
-        { title: editTitle },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      )
-      .then((res) => {
-        setTodos(
-          todos.map((todo) =>
-            todo._id === id ? res.data : todo
-          )
-        );
-        setEditId(null);
-      })
-      .catch((err) => console.error(err));
-  };
-
-  const clearAllTodos = () => {
-    axios
-      .delete("https://mern-todo-app-1-zxn7.onrender.com/todos", {
+  axios
+    .put(
+      `https://mern-todo-app-1-zxn7.onrender.com/todos/${id}`,
+      { title: editTitle },
+      {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`, // use the prop token
         },
-      })
-      .then(() => {
-        setTodos([]); // instantly clear UI
-      })
-      .catch((err) => console.error(err));
-  };
+      }
+    )
+    .then((res) => {
+      setTodos(
+        todos.map((todo) =>
+          todo._id === id ? res.data : todo
+        )
+      );
+      setEditId(null);
+    })
+    .catch((err) => console.error(err));
+};
+
+
+const clearAllTodos = () => {
+  axios
+    .delete("https://mern-todo-app-1-zxn7.onrender.com/todos", {
+      headers: {
+        Authorization: `Bearer ${token}`, // ✅ use prop instead of localStorage
+      },
+    })
+    .then(() => {
+      setTodos([]); // instantly clear UI
+    })
+    .catch((err) => console.error(err));
+};
 
   const toggleTheme = () => {
     setIsDark(!isDark);
@@ -112,16 +132,36 @@ const Todo = ({ token, setToken }) => {
     setToken("");
   };
 
+  function getTodayLabel() {
+    const today = new Date();
+
+    const formatter = new Intl.DateTimeFormat("en-US", {
+      weekday: "short",
+      day: "2-digit",
+      month: "short"
+    });
+
+    return formatter.format(today);
+  }
+
+
+
   return (
     <div className={`container ${isDark ? "dark" : ""}`}>
-      <h1>Todo App</h1>
-      <button onClick={logout} className="logoutButton">Logout</button>
-      <button className="clear-btn" onClick={clearAllTodos}>
-        Clear All
-      </button>
-      <button className="theme-btn" onClick={toggleTheme}>
-        {isDark ? "Light Mode" : "Dark Mode"}
-      </button>
+      <div className="header">
+        <h1>Todo App</h1>
+        <span className="date-label">{todayLabel}</span>
+      </div>
+
+      <div className="top-buttons">
+        <button className="clear-btn" onClick={clearAllTodos}>
+          Clear All
+        </button>
+        <button className="theme-btn" onClick={toggleTheme}>
+          {isDark ? "Light Mode" : "Dark Mode"}
+        </button>
+        <button onClick={logout} className="logoutButton">Logout</button>
+      </div>
 
 
 
@@ -161,12 +201,13 @@ const Todo = ({ token, setToken }) => {
 
             <div className="right">
               {editId === todo._id ? (
-                <button onClick={() => saveEdit(todo._id)}>💾</button>
+                <button onClick={() => saveEdit(todo._id)}><i class="fa-solid fa-floppy-disk"></i></button>
               ) : (
-                <button onClick={() => startEdit(todo)}>✏️</button>
+                <button onClick={() => startEdit(todo)}><i class="fa-solid fa-plus"></i></button>
               )}
 
-              <button onClick={() => deleteTodo(todo._id)}>❌</button>
+              <button onClick={() => deleteTodo(todo._id)}><i class="fa-solid fa-xmark"></i>
+              </button>
             </div>
           </li>
         ))}
