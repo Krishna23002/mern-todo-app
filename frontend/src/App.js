@@ -5,7 +5,7 @@ import Signup from "./pages/Signup";
 import Todo from "./Todo";
 
 function App() {
-  const [token, setToken] = useState("");
+  const [token, setToken] = useState(() => localStorage.getItem("token") || "");
   const [showLogin, setShowLogin] = useState(false); // Track which form to show
 
   

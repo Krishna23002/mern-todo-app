@@ -12,13 +12,16 @@ const Todo = ({ token, setToken }) => {
     localStorage.getItem("theme") === "dark"
   );
 
-  useEffect(() => {
-    axios.get("https://mern-todo-app-1-zxn7.onrender.com/todos", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }).then((res) => setTodos(res.data));
-  }, [token]);
+useEffect(() => {
+  if (!token) return; // wait until token exists
+
+  axios.get("https://mern-todo-app-1-zxn7.onrender.com/todos", {
+    headers: { Authorization: `Bearer ${token}` },
+  })
+  .then((res) => setTodos(res.data))
+  .catch((err) => console.error(err));
+}, [token]);
+
 
   useEffect(() => {
   if (!token) {
@@ -128,9 +131,11 @@ const clearAllTodos = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
-    setToken("");
-  };
+  localStorage.removeItem("token");
+  setToken("");
+  window.location.href = "/"; // redirect to login/signup
+};
+
 
   function getTodayLabel() {
     const today = new Date();
