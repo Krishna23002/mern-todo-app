@@ -9,9 +9,14 @@ body {
   color: #333;
 }
 
-.container {
+.todo-page {
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+.todo-container {
   max-width: 1200px;
-  margin: 2rem auto;
+  margin: 0 auto;
   padding: 20px;
   background-color: #ffffff;
   min-height: 90vh;
@@ -19,7 +24,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.container h1 {
+.todo-container h1 {
   font-size: 2.5rem;
   padding: 1rem;
   margin-bottom: 20px;
@@ -72,6 +77,8 @@ body {
 .input-box {
   display: flex;
   margin: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .input-box input {

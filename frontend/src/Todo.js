@@ -161,7 +161,8 @@ const clearAllTodos = () => {
 
 
   return (
-    <div className={`container ${isDark ? "dark" : ""}`}>
+    <div className="todo-page">
+    <div className={`todo-container ${isDark ? "dark" : ""}`}>
       <div className="header">
         <h1>Todo App</h1>
         <span className="date-label">{todayLabel}</span>
@@ -227,7 +228,7 @@ const clearAllTodos = () => {
         ))}
       </ul>
 
-    </div>
+    </div></div>
   );
 };
 
